@@ -2,6 +2,9 @@
 ghost_content/
 ghost_mysql/
 
+# All log directories
+**/*_logs/
+
 # General
 .DS_Store
 .AppleDouble

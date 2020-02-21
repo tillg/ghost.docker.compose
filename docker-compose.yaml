@@ -6,16 +6,17 @@ services:
     depends_on:
       - db
     environment:
-      url: http://localhost:3001
+      url: http://localhost
       database__client: mysql
       database__connection__host: db
       database__connection__user: root
       database__connection__password: your_database_root_password
       database__connection__database: ghost
-    ports:
-      - '3001:2368'
+      logging__path: /logs
+      logging__info: 'info'
     volumes:
       - ./ghost_content:/var/lib/ghost/content
+      - ./ghost_logs:/logs
 
   db:
     image: mysql:5.7
@@ -26,9 +27,7 @@ services:
       - ./ghost_mysql:/var/lib/mysql
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    image: nginx
     restart: always
     depends_on:
       - ghost
@@ -36,5 +35,6 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - ./nginx_letsencrypt/:/etc/letsencrypt/
-      - ./nginx_html:/usr/share/nginx/html
+      #- ./nginx_html:/usr/share/nginx/html:ro
+      - ./nginx_conf:/etc/nginx:ro
+      - ./nginx_logs:/logs
