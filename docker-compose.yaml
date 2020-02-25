@@ -10,10 +10,18 @@ services:
       database__client: mysql
       database__connection__host: db
       database__connection__user: root
-      database__connection__password: your_database_root_password
+      database__connection__password: ${DB_PASS:?err}
       database__connection__database: ghost
       logging__path: /logs
       logging__info: 'info'
+      mail__transport: 'SMTP'
+      mail__from: '${GMAIL_EMAIL:?err}'
+      mail__options__service: 'gmail'
+      mail__options__host: 'smtp.gmail.com'
+      mail__options__port: 465
+      mail__options__secure: 'true'
+      mail__options__auth__user: '${GMAIL_EMAIL:?err}'
+      mail__options__auth__pass: '${GMAIL_PASS:?err}'
     volumes:
       - ./ghost_content:/var/lib/ghost/content
       - ./ghost_logs:/logs
@@ -22,7 +30,7 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: your_database_root_password
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:?err}
     volumes:
       - ./ghost_mysql:/var/lib/mysql
 
