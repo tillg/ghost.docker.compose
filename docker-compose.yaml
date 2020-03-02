@@ -48,4 +48,4 @@ services:
       #- ./nginx_html:/usr/share/nginx/html:ro
       - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
-    command: /bin/bash -c "envsubst $SERVER_URL < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$$SERVER_URL' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
