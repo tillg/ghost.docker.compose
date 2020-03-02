@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     environment:
-      url: http://localhost
+      url: http://${SERVER_URL:?err}
       database__client: mysql
       database__connection__host: db
       database__connection__user: root
@@ -42,7 +42,10 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    environment:
+      SERVER_URL: ${SERVER_URL:?err}
     volumes:
       #- ./nginx_html:/usr/share/nginx/html:ro
-      - ./nginx_conf:/etc/nginx:ro
+      - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
+    command: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
