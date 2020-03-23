@@ -117,6 +117,39 @@ If you want to have content that is available only to certain readers, you need 
 - In the admin page go to Labs and switch members on
 - Make sure your email is properly set up. For Gmail as email follow [this guide](https://www.qoncious.com/questions/how-setup-ghost-send-email-using-gmail)
 
+#### Users and members
+
+A finding while working with this setup: You need to be careful and make a distinction between *Users* and *Members*:
+
+- *Users* are the ones that create content and administer the website.
+- *Members* are the ones that get access to non-public content.
+
+For some time I was confused about this distinction, because I worked with email addresses that were in both roles. This is perfectly possible and works good, you just need to keep in mind for what reason a mail gets sent or a person can or cannot read non-public content.
+
+To check, test and understand the differences:
+
+- Setup a member-enabled ghost server, i.e. `http://myghost.com`
+- Let's create a user, say user1@gmail.com
+- Let's create a member, say member1@gmail.com
+
+Now we can test the following scenarios:
+
+- You can log in to http://myghost.com/ghost (the admin-side of the site) as user1@gmail.com. This login is done via a user/password dialog:  ![Ghost User Login](images/ghost-user-login.png)
+- Try to create a blog post when logged in as this user. Make sure the `Post access` field is set to `Members only`.
+**Question**: Is it really `Member only` or should it be `Paid-member only`.
+- You **cannot** login to http://myghost.com/ghost as member1@gmail.com.
+**Note**: If you go thru the pasword-forgotten-process with the email address member1@gmail.com, Ghost will not tell you that the user email doesn't exist - this is for security reasons.
+- When going on http://myghost.com without being logged in (i.e. in a private browser tab), you will not see the private post.
+Note: You might see a teaser of the non-private posts, even when not being logged in. In case your (test-) post is very short, the teaser might look the same as the entire post... 😀.
+- If on the home page you click on `Log in` you **can** log in as user1@gmail.com, you **cannot** log in as member1@gmail.com
+
+#### Hide non-public posts
+
+The standard theme one would probably use when switching on the member feature in ghost is [Lyra](https://github.com/TryGhost/Lyra): It's the default, free theme that supports memberships. It looks pretty similar to the default Ghost theme [Casper](https://github.com/TryGhost/Casper).
+
+I was a little bit surpised to see that non public posts are visible on the home page, even when not being a logged in member. After investigation I understood that the blogs were only visible on the home page as teaser. This means only the abstract was displayed. When testing this with very short sample blog entries, the entire blog might be rendered...
+
+
 ## Reading / Sources / Tech background
 
 ### Reading
