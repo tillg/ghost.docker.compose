@@ -39,7 +39,7 @@ Go to [http://localhost](http://localhost) and enjoy your local docker setup.
 
 ## Directory structure
 
-The basic idfea of this setup is to have all the ghost data in one directory and it's sub-directories. The overall structure with relevant files is as follows:
+The basic idea of this setup is to have all the ghost data in one directory and it's sub-directories. The overall structure with relevant files is as follows:
 
 ```shell
 .
@@ -119,10 +119,10 @@ If you want to have content that is available only to certain readers, you need 
 
 #### Users and members
 
-A finding while working with this setup: You need to be careful and make a distinction between *Users* and *Members*:
+A finding while working with this setup: You need to be careful and make a distinction between _Users_ and _Members_:
 
-- *Users* are the ones that create content and administer the website.
-- *Members* are the ones that get access to non-public content.
+- _Users_ are the ones that create content and administer the website.
+- _Members_ are the ones that get access to non-public content.
 
 For some time I was confused about this distinction, because I worked with email addresses that were in both roles. This is perfectly possible and works good, you just need to keep in mind for what reason a mail gets sent or a person can or cannot read non-public content.
 
@@ -134,13 +134,13 @@ To check, test and understand the differences:
 
 Now we can test the following scenarios:
 
-- You can log in to http://myghost.com/ghost (the admin-side of the site) as user1@gmail.com. This login is done via a user/password dialog:  ![Ghost User Login](images/ghost-user-login.png)
+- You can log in to http://myghost.com/ghost (the admin-side of the site) as user1@gmail.com. This login is done via a user/password dialog: ![Ghost User Login](images/ghost-user-login.png)
 - Try to create a blog post when logged in as this user. Make sure the `Post access` field is set to `Members only`.
-**Question**: Is it really `Member only` or should it be `Paid-member only`.
+  **Question**: Is it really `Member only` or should it be `Paid-member only`.
 - You **cannot** login to http://myghost.com/ghost as member1@gmail.com.
-**Note**: If you go thru the pasword-forgotten-process with the email address member1@gmail.com, Ghost will not tell you that the user email doesn't exist - this is for security reasons.
+  **Note**: If you go thru the pasword-forgotten-process with the email address member1@gmail.com, Ghost will not tell you that the user email doesn't exist - this is for security reasons.
 - When going on http://myghost.com without being logged in (i.e. in a private browser tab), you will not see the private post.
-Note: You might see a teaser of the non-private posts, even when not being logged in. In case your (test-) post is very short, the teaser might look the same as the entire post... 😀.
+  Note: You might see a teaser of the non-private posts, even when not being logged in. In case your (test-) post is very short, the teaser might look the same as the entire post... 😀.
 - If on the home page you click on `Log in` you **can** log in as user1@gmail.com, you **cannot** log in as member1@gmail.com
 
 #### Hide non-public posts
@@ -149,6 +149,14 @@ The standard theme one would probably use when switching on the member feature i
 
 I was a little bit surpised to see that non public posts are visible on the home page, even when not being a logged in member. After investigation I understood that the blogs were only visible on the home page as teaser. This means only the abstract was displayed. When testing this with very short sample blog entries, the entire blog might be rendered...
 
+## To do
+
+Thingson my to do list:
+
+- Make the setup use HTTPS, thus dealing with the certificates...
+- Have a backup
+- Add a discourse to the setup so we have comments
+- Add [mail2ghost2mail](https://github.com/tillg/mail2ghost2mail) so posts can be created by emails and emails can be sent when posts are published.
 
 ## Reading / Sources / Tech background
 
