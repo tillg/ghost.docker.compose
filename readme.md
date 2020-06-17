@@ -23,8 +23,8 @@ A docker-compose based image of ghost that uses only local data.
 To run your local ghost as docker-compose network:
 
 ```shell
-git clone git@bitbucket.org:tgartner/ghost.docker.image.git
-cd ghost.docker.image
+git clone https://github.com/tillg/ghost.docker.compose.git
+cd ghost.docker.compose
 ```
 
 Then you need to set some variables (local secrets) as follows:
