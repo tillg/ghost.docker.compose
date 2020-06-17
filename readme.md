@@ -2,17 +2,7 @@
 
 A docker-compose based image of ghost that uses only local data.
 
-- [Running locally](#running-locally)
-- [Directory structure](#directory-structure)
-- [Configuration](#configuration)
-  - [Configuration in `docker-compose.yaml`](#configuration-in--docker-composeyaml-)
-  - [Configuring nginx](#configuring-nginx)
-  - [Setting the URL](#setting-the-url)
-  - [Creating certificates](#creating-certificates)
-  - [Setting up member management](#setting-up-member-management)
-- [Reading / Sources](#reading---sources)
-- [Solved problems](#solved-problems)
-  - [Setting up email with gmail](#setting-up-email-with-gmail)
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
 ## Running locally
 
