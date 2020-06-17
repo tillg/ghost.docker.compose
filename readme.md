@@ -35,7 +35,7 @@ Then edit your `.env` file (it's self explaining). Then start your environment:
 docker-compose up
 ```
 
-Go to [http://localhost](http://localhost) and enjoy your local docker setup.
+Go to [http://localhost](http://localhost) and enjoy your local ghost setup.
 
 ## Directory structure
 
@@ -78,14 +78,14 @@ ghost:
   image: ghost:latest
 ```
 
-The `latest` option might make sense for a test and development environment, but when using in production you might want to _freeze_ it to a version you tested... At the time of writing I froze my versions to `3.8` or `3.8-alpine`.
+The `latest` option might make sense for a test and development environment, but when using in production you might want to _freeze_ it to a version you tested... At the time of writing I froze my versions to `3.8` or `3.8-alpine`. For available versions of the official docker ghost image see [here](https://hub.docker.com/_/ghost).
 
-**`environment` variables**: The variable set within this section are passed on as configuration to the standard ghost docker iumage. For example the variable `database__connection__user` will be set in the ghost configuration JSON file. Find details about the configuration options in the [ghost documentation](https://ghost.org/docs/concepts/config/).
+**`environment` variables**: The variable set within this section are passed on as configuration to the standard ghost docker image. For example the variable `database__connection__user` will be set in the ghost configuration JSON file. Find details about the configuration options in the [ghost documentation](https://ghost.org/docs/concepts/config/).
 
-**Email configuration** As I wanted to use Google Mail (aka gmail) for sending emails, it took me some time to get all the coinfigurations right. Besides the correct entries in the configuration and their naming, the critical part was how to make it work with Google's current security setup. The curcial parts were
+**Email configuration** As I wanted to use Google Mail (aka gmail) for sending emails, it took me some time to get all the configurations right. Besides the correct entries in the configuration and their naming, the critical part was how to make it work with Google's current security setup. The crucial part was that you need a special _App Password_:
 
 - you need to set your Gmail acount to [2-Step Verification](https://www.google.com/landing/2step/).
-- And since the ghost app connects just with email & password (which is considered insecure), you need to use a so called [_app password_](https://support.google.com/accounts/answer/185833?hl=en).
+- And since the ghost app connects just with email & password (which is considered insecure), you need to use an [_App Password_](https://support.google.com/accounts/answer/185833?hl=en).
 
 ### Configuring nginx
 
@@ -104,10 +104,6 @@ In short, these are the steps:
 - Make sure your email account has two-step-verification switched on [as described here](https://support.google.com/accounts/answer/185839?hl=en&co=GENIE.Platform=Desktop)
 - Create an _App Password_ for Ghost (as an unsecure application) [as described here](https://support.google.com/mail/answer/185833?hl=en)
 - Set the Account data and App Password in your `.env` file and reference to it from within the `docker-compose.yaml` file.
-
-### Creating certificates
-
-To do...
 
 ### Setting up member management
 
@@ -155,7 +151,7 @@ Thingson my to do list:
 
 - Make the setup use HTTPS, thus dealing with the certificates...
 - Have a backup
-- Add a discourse to the setup so we have comments
+- Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
 - Add [mail2ghost2mail](https://github.com/tillg/mail2ghost2mail) so posts can be created by emails and emails can be sent when posts are published.
 
 ## Reading / Sources / Tech background
