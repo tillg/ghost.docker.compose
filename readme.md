@@ -33,7 +33,13 @@ Then you need to set some variables (local secrets) as follows:
 cp sample.env .env
 ```
 
-Then edit your `.env` file (it's self explaining). Then start your environment:
+Edit your `.env` file (it's self explaining). We then need to initialize our certificates:
+
+```shell
+./init-letsencrypt.sh
+```
+
+And start your environment:
 
 ```shell
 docker-compose up
@@ -48,6 +54,7 @@ The basic idea of this setup is to have all the ghost data in one directory and 
 ```shell
 .
 ├── docker-compose.yaml
+├── certbot # Certificates for HTTPS - will be generated
 ├── ghost_content # Written and managed by ghost
 │   ├── apps
 │   ├── data
@@ -163,9 +170,18 @@ Thingson my to do list:
 ### Reading
 
 - [How to Install Ghost CMS with Docker Compose on Ubuntu 18.04](https://www.linode.com/docs/websites/cms/how-to-install-ghost-cms-with-docker-compose-on-ubuntu-18-04/)
+- [Securing Your Nginx Site With Let’s Encrypt & Acme.sh](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/)
+- [How to get HTTPS working on your local development environment in 5 minutes](https://medium.com/free-code-camp/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec)
+- [Nginx and Let’s Encrypt with Docker in Less Than 5 Minutes](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
 
-### Why the URL is in the `.env` file
+### Why the URL is in the `.env` file?
 
 You might wonder why the URL of our blog is stored in the `.env` file, as this isn't really a secret... 😀
 
 The reason is a more comfortable way of working with different environments: As the `.env` file is local and specific to every environment, we can have a different URL in different environments. The typical setup would be to have the `SERVER_URL` set to the _real_ URL on the server and to `localhost` on your dev machine. So you can use the same configurations, except the URL...
+
+### How does the HTTPS Certificate thingy work?
+
+We are using certificates from [LetsEncrypt](https://letsencrypt.org/). To distribute them, they use a program called [ACME](https://www.wikiwand.com/en/Automated_Certificate_Management_Environment) that handles a lot for us: It's a command line tool to create, update etc. certificates. In order to prove that you are the legit owner of the certificate that you request, you have to serve a secret from a certain location on your server. Usually this is a file located under a URL like `example.com/.well-known/acme-challenge/`.
+
+The setupo we use is described [here](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/).

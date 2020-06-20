@@ -1,6 +1,10 @@
 # Content of Ghost, it's database 
 ghost_content/
 ghost_mysql/
+certbot/
+
+# Generated nginx conf
+nginx_conf/nginx.conf
 
 # Local secrets
 .env
