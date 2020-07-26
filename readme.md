@@ -20,6 +20,8 @@ A docker-compose based image of ghost that uses only local data.
 
 ## Running locally
 
+**Prerequites:** git, docker-compose
+
 To run your local ghost as docker-compose network:
 
 ```shell
