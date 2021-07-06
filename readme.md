@@ -184,6 +184,8 @@ The reason is a more comfortable way of working with different environments: As 
 
 ### How does the HTTPS Certificate thingy work?
 
+**27.2.2020** We are trying to use the following docker image that contains nginx and Certbot: https://github.com/staticfloat/docker-nginx-certbot
+
 We are using certificates from [LetsEncrypt](https://letsencrypt.org/). To distribute them, they use a program called [ACME](https://www.wikiwand.com/en/Automated_Certificate_Management_Environment) that handles a lot for us: It's a command line tool to create, update etc. certificates. In order to prove that you are the legit owner of the certificate that you request, you have to serve a secret from a certain location on your server. Usually this is a file located under a URL like `example.com/.well-known/acme-challenge/`.
 
-The setupo we use is described [here](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/).
+The setup we use is described [here](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/).
