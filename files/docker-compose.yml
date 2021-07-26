@@ -1,0 +1,70 @@
+version: '3'
+services:
+  ghost:
+    image: ghost:latest
+    container_name: ghost
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      url: https://{{ server_url }}
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: {{ db_pass }}
+      database__connection__database: ghost
+      logging__path: /logs
+      logging__info: 'info'
+      mail__transport: 'SMTP'
+      mail__from: {{ gmail_email }}
+      mail__options__service: 'gmail'
+      mail__options__host: 'smtp.gmail.com'
+      mail__options__port: 465
+      mail__options__secure: 'true'
+      mail__options__auth__user: {{ gmail_email }}
+      mail__options__auth__pass: {{ gmail_email }}
+    volumes:
+      - ./ghost_content:/var/lib/ghost/content
+      - ./ghost_logs:/logs
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ db_pass }}
+    volumes:
+      - ./ghost_mysql:/var/lib/mysql
+
+  nginx:
+    image: jonasal/nginx-certbot
+    #image: nginx
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - ghost
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      CERTBOT_EMAIL: {{ certbot_email }}
+      SERVER_URL: {{ server_url }}
+      USE_LOCAL_CA: {{ certbot_use_local_ca }}
+      DEBUG: {{ certbot_debug }}
+    volumes:
+      #- ./nginx_html:/usr/share/nginx/html:ro
+      #- ./nginx_conf:/etc/nginx
+      - ./nginx_logs:/logs
+      - ./nginx_secrets:/etc/letsencrypt
+      - ./nginx_conf.d:/etc/nginx/user_conf.d
+
+
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./certbot/conf:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
+  #     - ./certbot/logs:/var/log/letsencrypt
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

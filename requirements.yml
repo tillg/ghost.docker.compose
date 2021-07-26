@@ -1,0 +1,4 @@
+  - name: geerlingguy.docker
+    src: https://github.com/geerlingguy/ansible-role-docker
+  - name: geerlingguy.pip
+    src: https://github.com/geerlingguy/ansible-role-pip

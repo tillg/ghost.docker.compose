@@ -1,0 +1,6 @@
+
+[control]
+controller ansible_connection=local  ansible_python_interpreter=/usr/bin/python3
+
+[server]
+ghost.server.docker-compose ansible_host=<Server IP or name> ansible_connection=ssh ansible_user=tgartner ansible_python_interpreter=/usr/bin/python3

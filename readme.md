@@ -2,23 +2,7 @@
 
 A docker-compose based image of ghost that uses only local data.
 
-- [Docker Image Ghost](#docker-image-ghost)
-  - [Running locally](#running-locally)
-  - [Directory structure](#directory-structure)
-  - [Configuration](#configuration)
-    - [Configuration in `docker-compose.yaml`](#configuration-in-docker-composeyaml)
-    - [Configuring nginx](#configuring-nginx)
-    - [Setting the URL](#setting-the-url)
-    - [Setting up email with gmail](#setting-up-email-with-gmail)
-    - [Setting up member management](#setting-up-member-management)
-      - [Users and members](#users-and-members)
-      - [Hide non-public posts](#hide-non-public-posts)
-  - [To do](#to-do)
-  - [Reading / Sources / Tech background](#reading--sources--tech-background)
-    - [Reading](#reading)
-    - [Why the URL is in the `.env` file](#why-the-url-is-in-the-env-file)
-
-## Running locally
+## Running locally - Outdated!
 
 **Prerequites:** git, docker-compose
 
@@ -80,6 +64,7 @@ The basic idea of this setup is to have all the ghost data in one directory and 
 
 Besides the secrets you entered in the `.env` file, there are a couple of further configuration options you have:
 
+**Will all go in `vars.yml`!**
 ### Configuration in `docker-compose.yaml`
 
 The first place you should check for configuration options is the `docker-compose.yaml` file. Most of the options are self-explaining. Some notes about those options:

@@ -1,11 +1,11 @@
 # worker_processes  5;  ## Default: 1
 error_log  /logs/error.log;
-pid        /logs/nginx.pid;
+#pid        /logs/nginx.pid;
 # worker_rlimit_nofile 8192;
 
-events {
+#events {
   # worker_connections  4096;  ## Default: 1024
-}
+#}
 
 http {
   include    /etc/nginx/mime.types;
@@ -23,7 +23,7 @@ http {
 
   server {
       listen 80;
-      server_name  $SERVER_URL;
+      server_name  {{ server_url }};
       server_tokens off;
 
       location /.well-known/acme-challenge/ {
@@ -37,12 +37,12 @@ http {
 
   server { # simple reverse-proxy
     listen       443 ssl;
-    server_name  $SERVER_URL;
-    access_log   /logs/localhost.access.log  main;
+    server_name  {{ server_url }};
+    access_log   /logs/{{ server_url }}.access.log  main;
     server_tokens off;
 
-    ssl_certificate /etc/letsencrypt/live/$SERVER_URL/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$SERVER_URL/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{ server_url }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ server_url }}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 

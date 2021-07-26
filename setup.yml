@@ -1,0 +1,87 @@
+---
+- hosts: server
+  become: yes
+  tasks:
+  - name: Run apt update
+    apt:
+      update_cache: yes
+  - name: Remove useless packages from the cache
+    apt:
+      autoclean: yes
+  - name: Remove dependencies that are no longer required
+    apt:
+      autoremove: yes
+
+# Install the requirements on server
+- hosts: server
+  become: yes
+  vars:
+    pip_install_packages:
+      - name: docker
+      - name: docker-compose
+  vars_files:
+    - vars/all.yml
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+# Install the docker-compose deployments
+- hosts: server
+  tags: deploy
+  become: yes
+  vars_files:
+    - vars/all.yml
+
+  tasks: 
+    - name: Create docker/ghost directory
+      file:
+        path: "{{ docker_ghost_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
+    - name: Copy docker-compose file (template based)
+      template:
+        src: files/docker-compose.yml
+        dest: "{{ docker_ghost_dir }}/"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create ghost_logs directory
+      file:
+        path: "{{ docker_ghost_dir }}/ghost_logs"
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
+    # Copy the entire nginx configuration directory
+    - name: Copy nginx configuration directory
+      copy:
+        src: files/nginx_conf.d
+        dest: "{{ docker_ghost_dir }}"
+
+    - name: Copy nginx.conf (template based)
+      template:
+        src: files/nginx_conf.d/nginx.conf
+        dest: "{{ docker_ghost_dir }}/nginx_conf.d/nginx.conf"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create and start services
+      community.docker.docker_compose: 
+        state: present
+        restarted: yes
+        project_src: "{{ docker_ghost_dir }}/"
+        build: no #yes
+        #recreate: always
+        debug: yes
+        remove_orphans: yes
+      register: output
+
+    - ansible.builtin.debug:
+        var: output
+
