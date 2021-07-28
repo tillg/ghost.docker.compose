@@ -1,6 +1,6 @@
 # Docker Image Ghost
 
-A docker-compose based image of ghost that uses only local data.
+A docker-compose based setup of ghost that uses only local data - fully deployed via Ansible.
 
 ## Running locally - Outdated!
 
