@@ -57,11 +57,19 @@
         group: root
         mode: 0777
 
+    - name: Copy create_user.sql (template based)
+      template:
+        src: files/db_init/create_user.sql
+        dest: "{{ docker_ghost_dir }}/ghost_mysql/docker-entrypoint-initdb.d/"
+        owner: root
+        group: root
+        mode: 0644
+
     # Copy the entire nginx configuration directory
     - name: Copy nginx configuration directory
       copy:
-        src: files/nginx_conf.d
-        dest: "{{ docker_ghost_dir }}"
+        src: files/nginx_conf.d/
+        dest: "{{ docker_ghost_dir }}/nginx_conf.d"
 
     - name: Copy nginx.conf (template based)
       template:
@@ -74,10 +82,9 @@
     - name: Create and start services
       community.docker.docker_compose: 
         state: present
-        restarted: yes
+        restarted: no 
         project_src: "{{ docker_ghost_dir }}/"
-        build: no #yes
-        #recreate: always
+        build: no 
         debug: yes
         remove_orphans: yes
       register: output

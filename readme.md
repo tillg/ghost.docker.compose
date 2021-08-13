@@ -143,19 +143,24 @@ The standard theme one would probably use when switching on the member feature i
 
 I was a little bit surpised to see that non public posts are visible on the home page, even when not being a logged in member. After investigation I understood that the blogs were only visible on the home page as teaser. This means only the abstract was displayed. When testing this with very short sample blog entries, the entire blog might be rendered...
 
-## To do
+## To do & Done
 
-Thingson my to do list:
+Things on my to do list:
 
-- Make the setup use HTTPS, thus dealing with the certificates...
+- Go thru startup logs and review all security warnings.
 - Have a backup
+- Migrate grtnr.de to the new setup
 - Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
 - Add [mail2ghost2mail](https://github.com/tillg/mail2ghost2mail) so posts can be created by emails and emails can be sent when posts are published.
 
+### Done 
+
+* 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates...
 ## Reading / Sources / Tech background
 
 ### Reading
 
+- [Best way to backup ghost self hosted - Help - Ghost Forum](https://forum.ghost.org/t/best-way-to-backup-ghost-self-hosted/6246)
 - [How to Install Ghost CMS with Docker Compose on Ubuntu 18.04](https://www.linode.com/docs/websites/cms/how-to-install-ghost-cms-with-docker-compose-on-ubuntu-18-04/)
 - [Securing Your Nginx Site With Let’s Encrypt & Acme.sh](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/)
 - [How to get HTTPS working on your local development environment in 5 minutes](https://medium.com/free-code-camp/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec)

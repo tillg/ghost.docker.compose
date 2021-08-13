@@ -1,18 +1,20 @@
 version: '3'
 services:
   ghost:
-    image: ghost:latest
+    image: ghost:4.11-alpine
     container_name: ghost
     restart: unless-stopped
+    networks:
+      - ghost_network
     depends_on:
       - db
     environment:
-      url: https://{{ server_url }}
+      url: http://{{ server_url }}
       database__client: mysql
       database__connection__host: db
-      database__connection__user: root
+      database__connection__user: {{ db_user }}
       database__connection__password: {{ db_pass }}
-      database__connection__database: ghost
+      database__connection__database: {{ db_database }}
       logging__path: /logs
       logging__info: 'info'
       mail__transport: 'SMTP'
@@ -28,19 +30,27 @@ services:
       - ./ghost_logs:/logs
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0.26
     container_name: db
     restart: unless-stopped
+    networks:
+      - ghost_network
+    ports:
+      - '3306:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: {{ db_pass }}
+      MYSQL_ROOT_PASSWORD: {{ db_root_pass }}
+      MYSQL_DATABASE: {{ db_database }}
     volumes:
-      - ./ghost_mysql:/var/lib/mysql
+      - ./ghost_mysql/data:/var/lib/mysql
+      - ./ghost_mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d 
 
   nginx:
-    image: jonasal/nginx-certbot
+    image: jonasal/nginx-certbot:2.4.0-alpine
     #image: nginx
     container_name: nginx
     restart: unless-stopped
+    networks:
+      - ghost_network
     depends_on:
       - ghost
     ports:
@@ -52,19 +62,11 @@ services:
       USE_LOCAL_CA: {{ certbot_use_local_ca }}
       DEBUG: {{ certbot_debug }}
     volumes:
-      #- ./nginx_html:/usr/share/nginx/html:ro
-      #- ./nginx_conf:/etc/nginx
+      - ./nginx_html:/usr/share/nginx/html:ro
       - ./nginx_logs:/logs
       - ./nginx_secrets:/etc/letsencrypt
       - ./nginx_conf.d:/etc/nginx/user_conf.d
 
-
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt
-  #     - ./certbot/www:/var/www/certbot
-  #     - ./certbot/logs:/var/log/letsencrypt
-  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+networks:
+  ghost_network:
+    name: ghost_network
