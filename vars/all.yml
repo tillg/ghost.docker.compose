@@ -23,4 +23,4 @@ gmail_email: whatever@gmail.com
 # Your e-mail address. Used by Let's Encrypt to contact you in case of security issues.
 certbot_email: till.gartner@gmail.com
 certbot_use_local_ca: 1
-certbot_debug: 1
+certbot_debug: 0
