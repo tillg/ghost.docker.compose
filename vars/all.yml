@@ -12,15 +12,16 @@ docker_compose_path: /usr/local/bin/docker-compose
 docker_ghost_dir: /opt/docker/ghost
 
 # Ghost specific
-server_url: "192.168.64.22"
+server_url: "myserver.com"
 db_user: ghost
 db_pass: secret
 db_root_pass: supersecret
-db_database: ghost
+db_database: ghost_db
 gmail_email: whatever@gmail.com
+ghost_image: ghost:4.11-alpine
 
 # Nginx & Certbot specific
 # Your e-mail address. Used by Let's Encrypt to contact you in case of security issues.
 certbot_email: till.gartner@gmail.com
-certbot_use_local_ca: 1
+certbot_use_local_ca: 0
 certbot_debug: 0

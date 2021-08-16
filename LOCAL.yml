@@ -1,0 +1,10 @@
+
+server:
+  hosts:
+    localVM: 
+      env: LOCAL
+      ansible_host: 192.168.64.22 
+      ansible_sudo_pass: secret 
+      ansible_connection: ssh 
+      ansible_user: testuser 
+      ansible_python_interpreter: /usr/bin/python3 

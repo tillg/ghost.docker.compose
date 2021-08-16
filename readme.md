@@ -2,13 +2,26 @@
 
 A docker-compose based setup of ghost that uses only local data - fully deployed via Ansible.
 
-## Deploying & running 
+## Configuring - Deploying - Running 
 
-**Prerequites:** On your machine git and Ansible. And a server on which you can install & run the setup. The server just needs to have SSH and Python installed. 
+**Prerequites:** On your machine you need git and Ansible (I use 4.4.0 in Aug 2021). And a server on which you can install & run the setup. The server just needs to have SSH and Python installed. 
 
-Configure your setup by editing `vars/all.yml`. Then edit your inventory in the `hosts` file.
+Configure your setup by following these steps:
+
+* Create an inventory file per environment. For example one called `TEST.yml`
+* Enter the server contact details (like described [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups)). Make sure in the inventory you set your `env` variable, i.e. `env: TEST`
+* Create a corresponding variable file, i.e. `vars/TEST.yml`
+* Fill in the required variables in `TEST.yml`, i.e.
+  
+  ```yaml
+  server_url: "test.myserver.com" 
+  certbot_use_local_ca: 1
+  db_database: test_ghost
+  ```
 
 Then execute ` ansible-playbook setup.yml`. Then be patient - and eventually your Ghost blog will be up & running 😜
+
+For a list of all the configuration variables, have a look in `vars/all.yml` or for some configuration explkanations [here](##configuration).
 
 If you are interested in running local tests, see [Test with Multipass](test_with_multipass.md).
 ## Directory structure
@@ -36,43 +49,38 @@ The basic idea of this setup is to have all the ghost data in one directory and 
 ├── nginx.secrets # The SSL secrets
 ```
 
-This dierctory structure is underneath the `docker_ghost_dir` (as defined in `all.yml`). By default it's `/opt/docker/ghost`.
+This dierctory structure is underneath the `docker_ghost_dir` (as defined in `all.yml` or your environment variable file). By default it's `/opt/docker/ghost`.
 ## Configuration
 
-All configuration is done via the `all.yml` - or should be done there.
+All configuration is done via the environment variable files. To check what vareiables are available and what default values they are set to, check `vars/all.yml`. Make sure you do not change `all.yml`, but rather override them in your environment variable file, i.e. `vars/TEST.yml`.
 
-**Ghost image**: The version is set thru the image:
+Some variables and options that need explanation are described below.
 
-```yaml
-ghost:
-  image: ghost:latest
-```
+### Ghost image
 
-or 
+The version is set thru the docker image. Some possible values:
 
 ```yaml
-ghost:
-  image: ghost:4.11-alpine
+ghost_image: ghost:latest
+# or 
+ghost_image: ghost:4.11-alpine
 ```
 
 The `latest` option might make sense for a test and development environment, but when using in production you might want to _freeze_ it to a version you tested... At the time of writing I froze my versions to `4.11` or `4.11-alpine`. For available versions of the official docker ghost image see [here](https://hub.docker.com/_/ghost).
 
-**Email configuration** As I wanted to use Google Mail (aka gmail) for sending emails, it took me some time to get all the configurations right. Besides the correct entries in the configuration and their naming, the critical part was how to make it work with Google's current security setup. The crucial part was that you need a special _App Password_:
+### Setting up email with gmail 
 
-- you need to set your Gmail acount to [2-Step Verification](https://www.google.com/landing/2step/).
-- And since the ghost app connects just with email & password (which is considered insecure), you need to use an [_App Password_](https://support.google.com/accounts/answer/185833?hl=en).
-
-### Setting up email with gmail
-
-This was a painful process... The final solution for me was the comment of John in [this thread](https://forum.ghost.org/t/gmail-email-problem-configuration/10421)
+As I wanted to use Google Mail (aka gmail) for sending emails, it took me some time to get all the configurations right. This was a painful process... The final solution for me was the comment of John in [this thread](https://forum.ghost.org/t/gmail-email-problem-configuration/10421)
 
 In short, these are the steps:
 
 - Make sure your email account has two-step-verification switched on [as described here](https://support.google.com/accounts/answer/185839?hl=en&co=GENIE.Platform=Desktop)
 - Create an _App Password_ for Ghost (as an unsecure application) [as described here](https://support.google.com/mail/answer/185833?hl=en)
-- Set the Account data and App Password in your `.env` file and reference to it from within the `docker-compose.yaml` file.
+- Set the Account data and App Password in your environment variables file.
 
 ### Setting up member management
+
+**Note:** This is configuration that is set within ghost, so not in any variable files.
 
 If you want to have content that is available only to certain readers, you need to set up members. These are the steps to take:
 
@@ -116,7 +124,7 @@ I was a little bit surpised to see that non public posts are visible on the home
 
 Things on my to do list:
 
-- Go thru startup logs and review all security warnings.
+- Try deploying on a real AWS Server
 - Have a backup
 - Migrate grtnr.de to the new setup
 - Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
@@ -124,7 +132,9 @@ Things on my to do list:
 
 ### DONE 
 
-* 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates...
+* 2021-08-16: Switched to environment based variable settings
+* .
+* 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates. Go thru startup logs and review all security warnings.
 ## Reading / Sources / Tech background
 
 ### Reading

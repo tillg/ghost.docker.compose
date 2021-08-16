@@ -21,6 +21,7 @@
       - name: docker-compose
   vars_files:
     - vars/all.yml
+    - vars/{{ env }}.yml
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
@@ -31,8 +32,17 @@
   become: yes
   vars_files:
     - vars/all.yml
-
+    - vars/{{ env }}.yml
+    
   tasks: 
+    - name: Dump all variables
+      local_action:
+        module: template
+        src: dump_vars.j2 
+        dest: ./ansible_dump_vars.all
+      tags: debug_info
+      become: no
+      
     - name: Create docker/ghost directory
       file:
         path: "{{ docker_ghost_dir }}"
@@ -82,7 +92,7 @@
     - name: Create and start services
       community.docker.docker_compose: 
         state: present
-        restarted: no 
+        restarted: yes 
         project_src: "{{ docker_ghost_dir }}/"
         build: no 
         debug: yes
