@@ -3,7 +3,7 @@ server:
   hosts:
     localVM: 
       env: LOCAL
-      ansible_host: 192.168.64.22 
+      ansible_host: 192.168.64.40 
       ansible_sudo_pass: secret 
       ansible_connection: ssh 
       ansible_user: testuser 

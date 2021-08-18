@@ -30,7 +30,7 @@ services:
       - ./ghost_logs:/logs
 
   db:
-    image: mysql:8.0.26
+    image: {{ db_image }}
     command: --default-authentication-plugin=mysql_native_password
     container_name: db
     restart: unless-stopped
@@ -43,10 +43,10 @@ services:
       MYSQL_DATABASE: {{ db_database }}
     volumes:
       - ./ghost_mysql/data:/var/lib/mysql
-      - ./ghost_mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d 
+      - ./ghost_mysql_init/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d 
 
   nginx:
-    image: jonasal/nginx-certbot:2.4.0-alpine
+    image: {{ nginx_certbot_image }}
     #image: nginx
     container_name: nginx
     restart: unless-stopped

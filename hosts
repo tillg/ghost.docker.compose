@@ -3,4 +3,4 @@
 controller ansible_connection=local  ansible_python_interpreter=/usr/bin/python3
 
 [server]
-ghost.server.docker-compose ansible_host=192.168.64.22 ansible_sudo_pass=secret ansible_connection=ssh ansible_user=testuser ansible_python_interpreter=/usr/bin/python3
+ghost.server.docker-compose ansible_host=192.168.64.23 ansible_sudo_pass=secret ansible_connection=ssh ansible_user=testuser ansible_python_interpreter=/usr/bin/python3

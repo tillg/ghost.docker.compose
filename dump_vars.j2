@@ -1,14 +1,27 @@
 
-Specific vars
+Ansible access 
 ------------------
 ansible_host: {{ ansible_host }}
 ansible_sudo_pass: {{ ansible_sudo_pass }}
-{{ ansible_connection }}
-{{ ansible_user }}
-{{ ansible_python_interpreter }}
+ansible_connection: {{ ansible_connection }}
+ansible_user: {{ ansible_user }}
+ansible_python_interpreter: {{ ansible_python_interpreter }}
+
+Ghost stuff
+------------
 server_url: {{ server_url }}
-{{ certbot_use_local_ca }}
+certbot_use_local_ca: {{ certbot_use_local_ca }}
+gmail_email: {{ gmail_email }}
+ghost_image: {{ ghost_image }}
+
+Database vars
+---------------
+db_image: {{ db_image }}
+db_user: {{ db_user }}
+db_pass: {{ db_pass }}
+db_root_pass: {{ db_root_pass }}
 db_database: {{ db_database }}
+
 
 Module Variables ("vars"):
 --------------------------------

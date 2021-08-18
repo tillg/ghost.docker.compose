@@ -33,7 +33,7 @@
   vars_files:
     - vars/all.yml
     - vars/{{ env }}.yml
-    
+
   tasks: 
     - name: Dump all variables
       local_action:
@@ -70,7 +70,7 @@
     - name: Copy create_user.sql (template based)
       template:
         src: files/db_init/create_user.sql
-        dest: "{{ docker_ghost_dir }}/ghost_mysql/docker-entrypoint-initdb.d/"
+        dest: "{{ docker_ghost_dir }}/ghost_mysql_init/docker-entrypoint-initdb.d/"
         owner: root
         group: root
         mode: 0644

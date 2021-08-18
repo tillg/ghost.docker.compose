@@ -6,46 +6,25 @@ In order to test my Ansible scripts I use Multipass.
 
 This is how I set up a fresh instance, create my test user and run my Ansible scripts against it.
 
-**Merke**: Der Teil mit dem `network` geht auf Mac nur wenn VirtualBox als Treiber eingerichtet ist. Mit hyperkit geht das nicht, da kann man es einfach ignorieren. Hyperkit läuft bei mir deutlich stabiler.
+**Note**: I use multipass on the Mac with the hyperkit virtualizer. 
+First make sure my public SSH key is in my `cloud-config.yml`:
+
+* Copy my public key in clipboard: `pbcopy < ~/.ssh/id_rsa.pub`
+* The edit `cloud-config.yml` and replace the value behind `ssh_authorized_keys:`
+
+Now we can launch fresh instances with one line:
 
 ```bash
-# First check what networks we have
-multipass networks
-
-# Launch an instance that is attached to a network
-multipass launch --network en0   # on my Mac that's the Wifi
-# or
-multipass launch --network en7   # on my Mac that's the cable
-# On my Mac I give it more memory & CPUs:
-multipass launch -c 2 -m 2G -d 20G --network en7
+# Launch a fresh mulitpass / Ubuntu VMwith my testuser pre-configured
+multipass launch -c 2 -m 2G -d 20G --cloud-init cloud-config.yml
 
 # See wether the new instance is running and what IP address it got
 multipass list
 # or create an extra terminal window and
 watch multipass list
-
-# Create my test user
-multipass shell <name>
-
-# then within the VM:
-sudo adduser testuser
-# ...click yourself thru the questions...
-
-# Add the user to the sudo group
-sudo usermod -aG sudo testuser
-
-# Add the ssh key from my controlling machine (i.e. my Mac) so Ansible can access via ssh
-su - testuser
-mkdir ~/.ssh
-nano ~/.ssh/authorized_keys   # If you are fluent in vi feel free to use it - I am not 😜
 ```
 
-Now you have to copy your public ssh key over from your machine. An easy way to do this (on Mac) would be to copy the it to the clipboard and then paste it into the open nano editor:
-```bash
-pbcopy < ~/.ssh/id_rsa.pub
-```
-
-Close & save your nano editor and you should be able to login via ssh: `ssh testuser@<IP address>`.
+You should be able to login via ssh: `ssh testuser@<IP address>`.
 
 ## Execute Ansible
 
