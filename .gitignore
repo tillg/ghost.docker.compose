@@ -8,6 +8,18 @@ nginx_conf/nginx.conf
 
 # Local secrets
 .env
+LOCAL.env
+PROD.env
+TEST.env 
+PROD.yml
+PROD.yaml
+TEST.yml
+TEST.yaml
+STAGING.yml
+STAGING.yaml
+
+# Log files that should not be seen
+#ansible_dump_vars.all
 
 # All log directories
 **/*_logs/

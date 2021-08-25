@@ -30,9 +30,12 @@ services:
       - ./ghost_logs:/logs
 
   db:
-    image: {{ db_image }}
+    #image: {{ db_image }}
+    build: "{{ docker_ghost_dir }}/db_docker_build"
+    #command: mysqld --default-authentication-plugin=mysql_native_password
     command: --default-authentication-plugin=mysql_native_password
     container_name: db
+    #entrypoint:  ["/bin/sh", "-c", “while true; do sleep 2; df -h; done”]
     restart: unless-stopped
     cap_add:
       - SYS_NICE # Neede b/o a MySQL-Bug
@@ -43,7 +46,7 @@ services:
       MYSQL_DATABASE: {{ db_database }}
     volumes:
       - ./ghost_mysql/data:/var/lib/mysql
-      - ./ghost_mysql_init/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d 
+      #- ./ghost_mysql_init:/docker-entrypoint-initdb.d 
 
   nginx:
     image: {{ nginx_certbot_image }}
