@@ -20,8 +20,7 @@
       - name: docker
       - name: docker-compose
   vars_files:
-    - vars/all.yml
-    - vars/{{ env }}.yml
+  - [ "vars/all.yml", "vars/{{ env }}.yml" ]
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
@@ -94,7 +93,9 @@
     - name: Create and start services
       community.docker.docker_compose: 
         state: present
-        restarted: no  # A candidate for not working
+        # This must be set to no, otherwise the mysql 
+        # docker will not execute the create_user.sql
+        restarted: no  
         project_src: "{{ docker_ghost_dir }}/"
         build: yes
         debug: yes

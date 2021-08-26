@@ -12,7 +12,7 @@ docker_compose_path: /usr/local/bin/docker-compose
 docker_ghost_dir: /opt/docker/ghost
 
 # Ghost specific
-server_url: "myserver.com"
+server_url: "{{ ansible_host }}" 
 db_user: ghost
 db_pass: secret
 db_root_pass: supersecret
