@@ -26,31 +26,49 @@ services:
       mail__options__auth__user: {{ gmail_email }}
       mail__options__auth__pass: {{ gmail_email }}
     volumes:
-      - ./ghost_content:/var/lib/ghost/content
+      - content:/var/lib/ghost/content
       - ./ghost_logs:/logs
 
+  backup:
+    image: bennetimo/ghost-backup
+    #build: "{{ docker_ghost_dir }}/backup_docker_build"
+    container_name: backup
+    restart: unless-stopped
+    networks:
+      - ghost_network
+    environment: 
+      MYSQL_USER: {{ db_user }}
+      MYSQL_PASSWORD: {{ db_pass }}
+      MYSQL_DATABASE: {{ db_database }}
+    depends_on:
+      - ghost
+    volumes:
+      - content:/var/lib/ghost/content
+      - ./ghost_backups:/backups
+
   db:
-    #image: {{ db_image }}
     build: "{{ docker_ghost_dir }}/db_docker_build"
-    #command: mysqld --default-authentication-plugin=mysql_native_password
     command: --default-authentication-plugin=mysql_native_password
     container_name: db
-    #entrypoint:  ["/bin/sh", "-c", “while true; do sleep 2; df -h; done”]
     restart: unless-stopped
     cap_add:
       - SYS_NICE # Neede b/o a MySQL-Bug
     networks:
-      - ghost_network
+      ghost_network:
+        aliases: 
+          # The backup container expects to access a 'mysql' container
+          - mysql
     environment:
       MYSQL_ROOT_PASSWORD: {{ db_root_pass }}
       MYSQL_DATABASE: {{ db_database }}
     volumes:
       - ./ghost_mysql/data:/var/lib/mysql
-      #- ./ghost_mysql_init:/docker-entrypoint-initdb.d 
+    # ports:
+    #   - '3306:3306'
+
 
   nginx:
     image: {{ nginx_certbot_image }}
-    #image: nginx
     container_name: nginx
     restart: unless-stopped
     networks:
@@ -71,6 +89,12 @@ services:
       - ./nginx_secrets:/etc/letsencrypt
       - ./nginx_conf.d:/etc/nginx/user_conf.d
 
+volumes:
+  content:
+     driver_opts:
+           type: none
+           device: "{{ docker_ghost_dir }}/ghost_content"
+           o: bind
 networks:
   ghost_network:
     name: ghost_network

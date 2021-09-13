@@ -66,6 +66,14 @@
         group: root
         mode: 0777
 
+    - name: Create ghost_content directory
+      file:
+        path: "{{ docker_ghost_dir }}/ghost_content"
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
     - name: Copy create_user.sql (template based)
       template:
         src: files/db_docker_build/create_user.sql

@@ -16,12 +16,12 @@ server_url: "{{ ansible_host }}"
 db_user: ghost
 db_pass: secret
 db_root_pass: supersecret
-db_database: ghost_db
+db_database: "{{inventory_db_database|default('ghost_db')}}"
 gmail_email: whatever@gmail.com
 ghost_image: ghost:4.11-alpine
 
 # Database variables
-db_image: mysql:8.0.26
+db_image: mysql:8.0.20
 
 # Nginx & Certbot specific
 # Your e-mail address. Used by Let's Encrypt to contact you in case of security issues.
