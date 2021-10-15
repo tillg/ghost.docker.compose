@@ -1,3 +1,4 @@
+# A sample inventory representing a local VM
 
 server:
   hosts:

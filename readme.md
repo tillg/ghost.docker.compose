@@ -120,20 +120,103 @@ The standard theme one would probably use when switching on the member feature i
 
 I was a little bit surpised to see that non public posts are visible on the home page, even when not being a logged in member. After investigation I understood that the blogs were only visible on the home page as teaser. This means only the abstract was displayed. When testing this with very short sample blog entries, the entire blog might be rendered...
 
+### Backup & Restore
+
+The setup containes a backup tool wrapped in a docker container: We use the [backup container from Tim Bennet](https://github.com/bennetimo/ghost-backup). 
+
+In order to perform a backup of an existing environment (docker-based, that is):
+
+#### Run the backup container
+
+* Check if the backup container is running or needs to be launched with `docker ps`
+* To launch it: 
+
+```bash
+docker run --name backup -d \
+    --volumes-from ghost \
+    --network=ghost_grtnr \
+    -e MYSQL_USER=root \
+    -e MYSQL_PASSWORD=your_database_root_password \
+    -e MYSQL_DATABASE=grtnr-ghost \
+    bennetimo/ghost-backup
+```
+
+* Make sure the backup container is running with `docker ps` again
+
+* Execute the backup procedure: `docker exec -it backup backup -J`. The `-J` option switches off the JSON based backup as this doen't work with recent ghost versions anymore.
+* 
+
+#### Backup to migrate
+
+In order to migrate the data from the old setup (docker based but different, called PROD-OLD) to the new setup (called NEW) this is the way to go:
+
+* SSH onto PROD-OLD
+* Run the backup docker container like so:
+
+```bash
+# Launch the backup docker 
+# - with access to the ghost docker file system
+# - a mounted backup target 
+docker run --name ghost-backup -d \
+    --volumes-from <your-ghost-container> \
+    -v </backup/folder/on/host>:/backups \
+    --network=<your-network> \
+    -e MYSQL_USER=<yourdbuser> \
+    -e MYSQL_PASSWORD=<yourdbpassword> \
+    -e MYSQL_DATABASE=<yourdatabase> \
+    -e GHOST_SERVICE_USER_EMAIL=<my-email.%40emample.com> \
+    -e GHOST_SERVICE_USER_PASSWORD=<mypassword> \
+    bennetimo/ghost-backup
+```
+
+* log off ssh
+* Copy the backup files to the NEW system
+
+```bash
+# Go o the tmp directory (in which I have write access!)
+scp user@PROD-OLD:"/ghost_backup/*" .
+
+# then 
+scp * user@NEW:/ghost_backup
+```
+
+* SSH onto the new system
+* Restore the data from backup file: Make sure the `backup` container is running, then execute the restore
+
+```bash
+# Check if backup container is running:
+docker ps
+
+# Start backup container
+docker run --name ghost-backup -d \
+    --volumes-from <your-ghost-container> \
+    -v </backup/folder/on/host>:/backups \
+    --network=<your-network> \
+    -e MYSQL_USER=<yourdbuser> \
+    -e MYSQL_PASSWORD=<yourdbpassword> \
+    -e MYSQL_DATABASE=<yourdatabase> \
+    -e GHOST_SERVICE_USER_EMAIL=<my-email.%40emample.com> \
+    -e GHOST_SERVICE_USER_PASSWORD=<mypassword> \
+    bennetimo/ghost-backup
+
+# Run the restore 
+docker exec -it ghost-backup restore -i
+```
+
+* Restart the ghost docker
 ## TO DO & DONE
 
 Things on my to do list:
 
-- Try deploying on a real AWS Server
-- Have a backup
 - Migrate grtnr.de to the new setup
+- Organize a proper location for backing up to. Dropbox would be a candidate...
 - Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
 - Add [mail2ghost2mail](https://github.com/tillg/mail2ghost2mail) so posts can be created by emails and emails can be sent when posts are published.
 
 ### DONE 
 
+* 2021-09: I added a backup, I deployed on AWS.
 * 2021-08-16: Switched to environment based variable settings
-* .
 * 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates. Go thru startup logs and review all security warnings.
 ## Reading / Sources / Tech background
 

@@ -2,6 +2,7 @@
 ghost_content/
 ghost_mysql/
 certbot/
+tmp/
 
 # Generated nginx conf
 nginx_conf/nginx.conf

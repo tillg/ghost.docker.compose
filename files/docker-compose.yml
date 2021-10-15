@@ -31,7 +31,7 @@ services:
 
   backup:
     image: bennetimo/ghost-backup
-    #build: "{{ docker_ghost_dir }}/backup_docker_build"
+    #build: "{{ docker_ghost_dir }}/docker_build_backup"
     container_name: backup
     restart: unless-stopped
     networks:
@@ -44,10 +44,10 @@ services:
       - ghost
     volumes:
       - content:/var/lib/ghost/content
-      - ./ghost_backups:/backups
+      - {{ ghost_backup_dir }}:/backups
 
   db:
-    build: "{{ docker_ghost_dir }}/db_docker_build"
+    build: "{{ docker_ghost_dir }}/docker_build_db"
     command: --default-authentication-plugin=mysql_native_password
     container_name: db
     restart: unless-stopped

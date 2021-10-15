@@ -76,13 +76,13 @@
 
     - name: Copy create_user.sql (template based)
       template:
-        src: files/db_docker_build/create_user.sql
-        dest: "{{ docker_ghost_dir }}/db_docker_build/"
+        src: files/docker_build_db/create_user.sql
+        dest: "{{ docker_ghost_dir }}/docker_build_db/"
 
-    - name: Copy Dockerfile (template based)
+    - name: Copy Dockerfile for DB container (template based)
       template:
-        src: files/db_docker_build/Dockerfile
-        dest: "{{ docker_ghost_dir }}/db_docker_build/"
+        src: files/docker_build_db/Dockerfile
+        dest: "{{ docker_ghost_dir }}/docker_build_db/"
 
     # Copy the entire nginx configuration directory
     - name: Copy nginx configuration directory
@@ -109,6 +109,7 @@
         debug: yes
         remove_orphans: yes
       register: output
+      when: "'no_run' not in ansible_run_tags"
 
     - ansible.builtin.debug:
         var: output
