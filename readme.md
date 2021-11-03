@@ -208,13 +208,16 @@ docker exec -it ghost-backup restore -i
 
 Things on my to do list:
 
-- Migrate grtnr.de to the new setup
 - Organize a proper location for backing up to. Dropbox would be a candidate...
+- Get rid of _Subscribe_ button on the top right corner / on the sandwich menu.
+- Add Google tracking to understand visitors
 - Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
 - Add [mail2ghost2mail](https://github.com/tillg/mail2ghost2mail) so posts can be created by emails and emails can be sent when posts are published.
 
 ### DONE 
 
+* 2021-11-03: Migrated to ghost V 4.21.0, since a vulnerability of the old version was published. And of course I testede the migration on my test-site first 
+* 2021-10: Migrated the main blog to the new setup: https://grtnr.de 
 * 2021-09: I added a backup, I deployed on AWS.
 * 2021-08-16: Switched to environment based variable settings
 * 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates. Go thru startup logs and review all security warnings.
