@@ -21,7 +21,16 @@ gmail_email: whatever@gmail.com
 ghost_image: ghost:4.21.0-alpine
 
 # Backup location of the docker host
-ghost_backup_dir: /ghost_backup
+ghost_backup_dir: /ghost-backup
+
+# Dropbox as backup destination
+# We need to keepn this image in that version, as later images are buggy! (As of Nov 2021)
+backup_dir_within_dropbox: ghost-backup
+dropbox_image: otherguy/dropbox:1.9.0
+dropbox_base_dir_on_host: {{ docker_ghost_dir }}/backup
+dropbox_config_dir: {{ docker_ghost_dir }}/dropbox_config
+dropbox_data_dir: 
+
 
 # Database variables
 db_image: mysql:8.0.20

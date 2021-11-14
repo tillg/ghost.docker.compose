@@ -29,6 +29,17 @@ services:
       - content:/var/lib/ghost/content
       - ./ghost_logs:/logs
 
+  dropbox:
+    image: {{ dropbox_image }}
+    container_name: dropbox
+    environment:
+      # Can't update Dropbox client or Docker image until this bug is fixed. https://github.com/otherguy/docker-dropbox/issues/37
+      - DROPBOX_SKIP_UPDATE=true
+    volumes:
+      - {{ dropbox_config_dir }}:/opt/dropbox/.dropbox
+      - {{ ghost_backup_dir }}:/opt/dropbox/Dropbox
+    restart: unless-stopped
+
   backup:
     image: bennetimo/ghost-backup
     #build: "{{ docker_ghost_dir }}/docker_build_backup"
@@ -42,6 +53,7 @@ services:
       MYSQL_DATABASE: {{ db_database }}
     depends_on:
       - ghost
+      - dropbox
     volumes:
       - content:/var/lib/ghost/content
       - {{ ghost_backup_dir }}:/backups

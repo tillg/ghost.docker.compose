@@ -221,15 +221,26 @@ Things on my to do list:
 * 2021-09: I added a backup, I deployed on AWS.
 * 2021-08-16: Switched to environment based variable settings
 * 2021-08-13: Make the setup use HTTPS, thus dealing with the certificates. Go thru startup logs and review all security warnings.
+
 ## Reading / Sources / Tech background
 
 ### Reading
 
+* It took some time to find a working docker-dropbox container (so a docker that gives you access to your Dropbox area). [This one](https://github.com/otherguy/docker-dropbox) is promising..
 - [Best way to backup ghost self hosted - Help - Ghost Forum](https://forum.ghost.org/t/best-way-to-backup-ghost-self-hosted/6246)
 - [How to Install Ghost CMS with Docker Compose on Ubuntu 18.04](https://www.linode.com/docs/websites/cms/how-to-install-ghost-cms-with-docker-compose-on-ubuntu-18-04/)
 - [Securing Your Nginx Site With Let’s Encrypt & Acme.sh](https://www.snel.com/support/securing-your-nginx-site-with-lets-encrypt-acme-sh/)
 - [How to get HTTPS working on your local development environment in 5 minutes](https://medium.com/free-code-camp/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec)
 - [Nginx and Let’s Encrypt with Docker in Less Than 5 Minutes](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
+
+### Backing up to Dropbox
+
+Backing up to Dropbox turned out to be challenging:
+
+* How do I access a dropbox directory from within a docker container? 
+There are many docker containers that promise to do the job, but many are outdated. One that works is [the one from otherguy](https://github.com/otherguy/docker-dropbox) (btw, great name 😜)
+* When launching it, I got a recurring problem. Eventually I found out that using an older version of Dropbox and inhibiting Dropbox' built in updating process fixes the problem (another hour lost...)
+* How do I just sync the one directory that contain the backups? When launching the dropbox container, it syncs your entire dropbox by default. Not good. Another hour invested... 
 
 ### How does the HTTPS Certificate thingy work?
 
