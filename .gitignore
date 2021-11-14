@@ -3,6 +3,7 @@ ghost_content/
 ghost_mysql/
 certbot/
 tmp/
+backups/
 
 # Generated nginx conf
 nginx_conf/nginx.conf
@@ -21,7 +22,7 @@ STAGING.yml
 STAGING.yaml
 
 # Log files that should not be seen
-#ansible_dump_vars.all
+ansible_dump_vars.all
 
 # All log directories
 **/*_logs/
