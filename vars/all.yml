@@ -18,7 +18,7 @@ db_pass: secret
 db_root_pass: supersecret
 db_database: "{{inventory_db_database|default('ghost_db')}}"
 gmail_email: whatever@gmail.com
-ghost_image: ghost:4.21.0-alpine
+ghost_image: ghost:4.22.1-alpine
 
 # Backup location of the docker host
 ghost_backup_dir: /ghost_backup

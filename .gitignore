@@ -4,6 +4,7 @@ ghost_mysql/
 certbot/
 tmp/
 backups/
+notes.md
 
 # Generated nginx conf
 nginx_conf/nginx.conf

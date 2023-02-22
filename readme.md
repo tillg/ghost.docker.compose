@@ -144,7 +144,8 @@ docker run --name backup -d \
 * Make sure the backup container is running with `docker ps` again
 
 * Execute the backup procedure: `docker exec -it backup backup -J`. The `-J` option switches off the JSON based backup as this doen't work with recent ghost versions anymore.
-* 
+
+Copy
 
 #### Backup to migrate
 
@@ -208,7 +209,7 @@ docker exec -it ghost-backup restore -i
 
 Things on my to do list:
 
-- Organize a proper location for backing up to. Dropbox would be a candidate...
+- Add monitoring, may be using ELK, Grafana or [Uptime Kuma](https://github.com/louislam/uptime-kuma)
 - Get rid of _Subscribe_ button on the top right corner / on the sandwich menu.
 - Add Google tracking to understand visitors
 - Add a discourse to the setup so we have comments like [here](https://ghost.org/integrations/discourse/)
@@ -216,6 +217,7 @@ Things on my to do list:
 
 ### DONE 
 
+* 2021-11-14: Backups are no pulled from server into a local dir.
 * 2021-11-03: Migrated to ghost V 4.21.0, since a vulnerability of the old version was published. And of course I testede the migration on my test-site first 
 * 2021-10: Migrated the main blog to the new setup: https://grtnr.de 
 * 2021-09: I added a backup, I deployed on AWS.
